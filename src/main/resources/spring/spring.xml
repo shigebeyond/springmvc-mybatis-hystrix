@@ -11,4 +11,6 @@
     <context:component-scan base-package="com.baomidou.springmvc.service"/>
 
     <import resource="classpath:spring/spring-mybatis.xml"/>
+
+    <import resource="classpath:spring/spring-hystrix.xml"/>
 </beans>

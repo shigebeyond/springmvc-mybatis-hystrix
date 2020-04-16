@@ -1,5 +1,7 @@
 package com.baomidou.springmvc.controller;
 
+import com.baomidou.springmvc.model.hlpay.User;
+import com.baomidou.springmvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,29 +9,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.baomidou.springmvc.model.enums.TypeEnum;
-import com.baomidou.springmvc.model.system.User;
-import com.baomidou.springmvc.service.system.IUserService;
-
 /**
  * Author: D.Yang
  * Email: koyangslash@gmail.com
  * Date: 16/10/9
  * Time: 上午11:58
  * Describe: 用户控制器
- * 
+ * <p>
  * 代码生成器，参考源码测试用例：
- * 
+ * <p>
  * /mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/generator/MysqlGenerator.java
- *
  */
 @Controller
 public class UserController extends BaseController {
 
-    private final IUserService userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -52,12 +49,12 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping("save")
     public Object save(User user) {
-        user.setType(TypeEnum.DISABLED);
+        user.setState(0);
         if (user.getId() == null) {
             return userService.insert(user) ? renderSuccess("添加成功") : renderError("添加失败");
-        } else {
-            return userService.updateById(user) ? renderSuccess("修改成功") : renderError("修改失败");
         }
+
+        return userService.updateById(user) ? renderSuccess("修改成功") : renderError("修改失败");
     }
 
     @ResponseBody

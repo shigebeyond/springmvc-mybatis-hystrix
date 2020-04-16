@@ -1,17 +1,20 @@
 package test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.springmvc.model.system.User;
-import com.baomidou.springmvc.service.system.IUserService;
+import com.baomidou.springmvc.model.hlpay.User;
+import com.baomidou.springmvc.service.UserService;
+import com.netflix.hystrix.contrib.javanica.aop.aspectj.HystrixCommandAspect; //导入依赖的package包/类
 
 /**
  * <p>
@@ -24,17 +27,28 @@ import com.baomidou.springmvc.service.system.IUserService;
 @ContextConfiguration(locations = {"classpath:spring/spring.xml"})
 public class ServiceTest {
 
+    @Bean
+    public HystrixCommandAspect hystrixAspect(){
+        return new HystrixCommandAspect();
+    }
+
     @Autowired
-    IUserService iUserService;
+    UserService userService;
 
     @Test
-    public void selectTest(){
-        List<User> list = iUserService.selectList(new EntityWrapper<User>());
-        System.out.println("****************************************");
-        for(User u:list){
-            System.out.println(u.getType());
-            Assert.assertNotNull("TypeEnum should not null",u.getType());
-        }
-        System.out.println("****************************************");
+    public void testFind() throws ExecutionException, InterruptedException {
+        Future<User> user1 = userService.find(1L);
+        Future<User> user2 = userService.find(2L);
+        System.out.println(user1.get());
+        System.out.println(user2.get());
+    }
+
+    @Test
+    public void testFindAll() throws ExecutionException, InterruptedException {
+        List<Long> ids = new ArrayList();
+        ids.add(1L);
+        List<User> users = userService.findAll(ids);
+        for(User user: users)
+            System.out.println(user);
     }
 }
