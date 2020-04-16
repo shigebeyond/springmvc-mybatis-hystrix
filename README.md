@@ -1,4 +1,4 @@
-# springmvc+mybatis+hystrix demo
+# springmvc+mybatisplus+hystrix demo
 
 spring mvc 结合 mybatisplus 与 HystrixCollapser 的示例代码
 
@@ -13,7 +13,7 @@ spring mvc 结合 mybatisplus 与 HystrixCollapser 的示例代码
 3. 添加Web服务器运行, 也可以直接运行单元测试代码 `test.ServiceTest.testFind()`
 
 
-# mybatis 资料
+# mybatisplus 资料
 
 1. [文档](http://mp.baomidou.com/)
 
